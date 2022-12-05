@@ -1,9 +1,48 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FcSalesPerformance, FcDocument, FcBusinessman } from "react-icons/fc";
-import { FaProductHunt } from "react-icons/fa";
-import { BsThreeDots } from "react-icons/bs";
+import { GiPayMoney } from "react-icons/gi";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
+import _ from "lodash";
+
+const pageSize = 5;
 const Section = () => {
+  const [paginatedClients, setPaginatedClients] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dashboard, setDashboard] = useState([]);
+  const [invoices, setInvoices] = useState([]);
+
+  useEffect(() => {
+    fetchSupplier();
+    fetchInvoices();
+  }, []);
+  const pageCount = invoices ? Math.ceil(invoices.length / pageSize) : 0;
+  if (pageCount === 1) return null;
+  const pages = _.range(1, pageCount + 1);
+
+  const pagination = (pageNo) => {
+    setCurrentPage(pageNo);
+    const startIndex = (pageNo - 1) * pageSize;
+    const paginatedClient = _(invoices)
+      .slice(startIndex)
+      .take(pageSize)
+      .value();
+    setPaginatedClients(paginatedClient);
+  };
+  const fetchSupplier = async () => {
+    await axios.get("http://127.0.0.1:8000/api/dashboard").then((data) => {
+      setDashboard(data.data);
+    });
+  };
+
+  const fetchInvoices = async () => {
+    await axios.get("http://127.0.0.1:8000/api/lastInvoices").then((data) => {
+      setInvoices(data.data.data);
+    });
+  };
+  console.log(invoices);
+
   return (
     <div className="bg-gray-50 grid grid-cols-2 col-span-9 gap-3 rounded">
       <p className="col-span-2 h-fit ml-4 pt-2 font-semibold text-2xl">
@@ -13,112 +52,82 @@ const Section = () => {
         <h4 className="p-4 font-thin">Total Balance</h4>
         <div className="flex justify-between items-center pl-4">
           <FcSalesPerformance className="text-8xl" />
-          <h4 className="relative  pr-3 text-2xl">0$</h4>
+          <h4 className="relative  pr-3 text-2xl">
+            {dashboard.total_balance}$
+          </h4>
         </div>
       </div>
       <div className="mr-3 bg-white rounded ml-3 h-fit">
-        <h4 className="p-4 font-thin">Total Products</h4>
+        <h4 className="p-4 font-thin">Total Debt</h4>
         <div className="flex justify-between items-center pl-4">
-          <FaProductHunt className="text-8xl text-blue-300" />
-          <h4 className="relative  pr-3 text-2xl">0</h4>
+          <GiPayMoney className="text-8xl text-blue-300" />
+          <h4 className="relative  pr-3 text-2xl">{dashboard.total_debt}$</h4>
         </div>
       </div>
       <div className="bg-white rounded ml-3 h-fit">
-        <h4 className="p-4 font-thin">Total Invoice</h4>
+        <h4 className="p-4 font-thin">Total Sales Invoices</h4>
         <div className="flex justify-between items-center pl-4">
           <FcDocument className="text-8xl" />
-          <h4 className="relative  pr-3 text-2xl">0</h4>
+          <h4 className="relative  pr-3 text-2xl">
+            {dashboard.total_sales_invoices}
+          </h4>
         </div>
       </div>
       <div className="mr-3 bg-white rounded ml-3 h-fit">
-        <h4 className="p-4 font-thin">Total Client</h4>
+        <h4 className="p-4 font-thin">Total Clients</h4>
         <div className="flex justify-between items-center pl-4">
           <FcBusinessman className="text-8xl" />
-          <h4 className="relative  pr-3 text-2xl">0</h4>
+          <h4 className="relative  pr-3 text-2xl">{dashboard.total_clients}</h4>
         </div>
       </div>
       <p className="col-span-2 h-fit ml-4 pt-2 font-semibold text-2xl">
         Invoices
       </p>
-      <button className="bg-blue-400 w-fit ml-4 rounded px-3 h-10 hover:bg-blue-500 text-white font-medium">
+      <Link
+        className="bg-blue-400 w-fit ml-4 pt-2 rounded px-3 h-10 hover:bg-blue-500 text-white font-medium"
+        to={"/pages/Sales"}
+      >
         Add New Invoice
-      </button>
-      <table className="table-auto col-span-2 mx-3 text-gray-600">
+      </Link>
+      <table className="table-auto col-span-2 mx-3 mb-3  text-gray-600">
         <thead className="bg-blue-200 items-center">
           <tr className="rounded">
             <th>Invoice NO</th>
+            <th>Invoice Code</th>
             <th>Client Name</th>
-            <th>Status</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Action</th>
+            <th>Total</th>
           </tr>
         </thead>
         <tbody className="bg-blue-50 text-center ">
-          <tr>
-            <td>1</td>
-            <td>Wish Group</td>
-            <td>Paid</td>
-            <td>example1@gmail.com</td>
-            <td>01201101055</td>
-            <td>
-              <BsThreeDots className="hover:bg-blue-300 rounded m-auto" />
-            </td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>ibrahim adel</td>
-            <td>Unpaid</td>
-            <td>example2@gmail.com</td>
-            <td>01201101056</td>
-            <td>
-              <BsThreeDots className="hover:bg-blue-300 rounded m-auto" />
-            </td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>wessam ali</td>
-            <td>Paid</td>
-            <td>example3@gmail.com</td>
-            <td>01201101054</td>
-            <td>
-              <BsThreeDots className="hover:bg-blue-300 rounded m-auto" />
-            </td>
-          </tr>
+          {paginatedClients &&
+            paginatedClients.map((invoice, i) => (
+              <>
+                {invoice.customer.map((inv, index) => (
+                  <tr key={invoice.id}>
+                    <td>{invoice.id}</td>
+                    <td>{invoice.code}</td>
+                    <td>{inv.name}</td>
+                    <td>{invoice.total}</td>
+                  </tr>
+                ))}
+              </>
+            ))}
         </tbody>
       </table>
-      <p className="col-span-2 h-fit ml-4 pt-2 font-semibold text-2xl">
-        Clients
-      </p>
-      <button className="bg-blue-400 w-fit ml-4 rounded px-3 h-10 hover:bg-blue-500 text-white font-medium">
-        Add New Client
-      </button>
-      <table className="table-auto col-span-2 mx-3 text-gray-600">
-        <thead className="bg-blue-200 items-center">
-          <tr className="rounded">
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody className="bg-blue-50 text-center">
-          <tr>
-            <td>Wish Group</td>
-            <td>example1@gmail.com</td>
-            <td>01201101055</td>
-          </tr>
-          <tr>
-            <td>ibrahim adel</td>
-            <td>example2@gmail.com</td>
-            <td>01201101056</td>
-          </tr>
-          <tr>
-            <td>wessam ali</td>
-            <td>example3@gmail.com</td>
-            <td>01201101054</td>
-          </tr>
-        </tbody>
-      </table>
+      <nav className="Page col-span-2 mx-auto mb-3navigation example">
+        <ul className="inline-flex -space-x-px">
+          {pages.map((page) => (
+            <li>
+              <p
+                className="px-3 cursor-pointer py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                onClick={() => pagination(page)}
+              >
+                {page}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 };

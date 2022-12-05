@@ -1,105 +1,96 @@
 import React, { useEffect, useState } from "react";
-import SideBar from "../components/SideBar";
 import axios from "axios";
 import Swal from "sweetalert2";
+import SideBar from "./SideBar";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 
 const pageSize = 5;
-const Supplier = () => {
-  const [supplier, setSupplier] = useState([]);
-  const [searchSupplier, setSearchSupplier] = useState("");
+const Clients = () => {
+  const [client, setClient] = useState([]);
+  const [searchClient, setSearchClient] = useState("");
   const [paginatedClients, setPaginatedClients] = useState();
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchSupplier();
+    fetchClient();
   }, []);
 
-  const fetchSupplier = async () => {
-    await axios.get("http://localhost:8000/api/suppliers").then((data) => {
-      setSupplier(data.data.data);
+  const fetchClient = async () => {
+    await axios.get("http://127.0.0.1:8000/api/customers").then((data) => {
+      setClient(data.data.data);
       setPaginatedClients(_(data.data.data).slice(0).take(pageSize).value());
     });
   };
-  const deleteSupplier = (id) => {
+
+  const deleteClient = (id) => {
     Swal.fire({
-      title: `Are You Sure To delete?`,
-      text: "You won't be able to revert this!",
-      icon: "warning",
+      title: `are you sure you want to delete this client ?`,
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it",
     }).then((data) => {
       if (data.isConfirmed) {
         axios
-          .delete(`http://localhost:8000/api/suppliers/${id}`)
-          .then(() => {
-            Swal.fire("Deleted!", "This Supplier has been deleted.", "success");
-            fetchSupplier();
+          .delete("http://localhost:8000/api/customers/" + id)
+          .then(({ data }) => {
+            console.log(data.message);
+            fetchClient();
           })
           .catch(({ response: { data } }) => {
-            console.log(data.data.message);
+            console.log(data.message);
           });
       }
     });
   };
-  const pageCount = supplier ? Math.ceil(supplier.length / pageSize) : 0;
+  const pageCount = client ? Math.ceil(client.length / pageSize) : 0;
   if (pageCount === 1) return null;
   const pages = _.range(1, pageCount + 1);
 
   const pagination = (pageNo) => {
     setCurrentPage(pageNo);
     const startIndex = (pageNo - 1) * pageSize;
-    const paginatedSupplier = _(supplier)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
-    setPaginatedClients(paginatedSupplier);
+    const paginatedClient = _(client).slice(startIndex).take(pageSize).value();
+    setPaginatedClients(paginatedClient);
   };
 
   return (
     <div className="grid grid-cols-12">
       <SideBar />
       <div className="col-span-9 bg-gray-50 ">
-        <p className=" h-fit ml-4 pt-2 mb-3 font-semibold text-2xl">
-          Suppliers
-        </p>
+        <p className=" h-fit ml-4 pt-2 font-semibold text-2xl mb-3">Clients</p>
         <Link
-          to={"../addsupplier"}
+          to={"../addclient"}
           className="bg-blue-400 w-fit ml-4 rounded px-3 h-10 hover:bg-blue-500 text-white font-medium py-2"
         >
-          Add New Supplier
+          Add New Client
         </Link>
         <div className="bg-white rounded m-4">
           <p className="p-3 font-semibold text-2xl">Search</p>
           <input
             className="border border-gray-400 rounded p-2 m-3 w-80"
             type="text"
-            placeholder="supplier name"
-            onChange={(e) => setSearchSupplier(e.target.value)}
+            placeholder="client name"
+            onChange={(e) => setSearchClient(e.target.value)}
           />
         </div>
         <div className=" rounded m-4 text-xl ">
           <table className="table-auto w-full  text-gray-600">
-            <thead className="bg-blue-200">
+            <thead className="bg-blue-200 ">
               <tr>
-                <th className="text-start py-2 pl-2">user Name</th>
+                <th className="text-start p-2">user Name</th>
                 <th className="text-start">Phone</th>
-                <th className="">Action</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody className="bg-blue-50">
               {paginatedClients &&
                 paginatedClients
                   .filter((value) => {
-                    if (searchSupplier === "") {
+                    if (searchClient === "") {
                       return value;
                     } else if (
                       value.name
                         .toLowerCase()
-                        .includes(searchSupplier.toLowerCase())
+                        .includes(searchClient.toLowerCase())
                     ) {
                       return value;
                     }
@@ -112,14 +103,14 @@ const Supplier = () => {
                         <ul className="mt-1">
                           <Link
                             className="mr-3 px-3 py-1 rounded bg-blue-400 text-white hover:bg-blue-600 "
-                            to={`../editsupplier/${sup.id}`}
+                            to={`../editclient/${sup.id}`}
                           >
                             Edit
                           </Link>
                           <button
                             className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-800"
                             onClick={() => {
-                              deleteSupplier(sup.id);
+                              deleteClient(sup.id);
                             }}
                           >
                             Delete
@@ -150,4 +141,4 @@ const Supplier = () => {
   );
 };
 
-export default Supplier;
+export default Clients;
