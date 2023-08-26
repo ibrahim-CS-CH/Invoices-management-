@@ -127,7 +127,6 @@ import { Link, Navigate } from "react-router-dom";
 import SideBar from "../components/SideBar";
 
 const Products = () => {
-  let invId = localStorage.getItem("inv_id");
 
   const [products, setProducts] = useState([]);
   const [searchProduct, setSearchProduct] = useState("");
@@ -138,7 +137,7 @@ const Products = () => {
 
   const fetchProducts = async () => {
     await axios
-      .get("http://localhost:8000/api/inventories/" + invId)
+      .get("http://localhost:8000/api/inventories/" + 2)
       .then((data) => {
         setProducts(data.data.data);
       });

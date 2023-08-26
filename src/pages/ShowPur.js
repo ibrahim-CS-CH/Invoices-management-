@@ -17,6 +17,15 @@ const ShowPur = () => {
         setSalesInv(data.data.data);
       });
   };
+  const fetchAll = async () => {
+    await axios
+      .get(
+        "http://localhost:8000/api/sales-invoices"
+      )
+      .then((data) => {
+        console.log(data, "trying");
+      }).catch((err)=>console.log(err));
+  };
   const [searchProduct, setSearchProduct] = useState("");
   const [purchases, setPurchases] = useState([]);
   // if (salesInv) {
@@ -29,8 +38,8 @@ const ShowPur = () => {
   // }
   useEffect(() => {
     fetchProducts();
+    fetchAll();
   }, []);
-  console.log(salesInv);
   return (
     <div className="grid grid-cols-12">
       <SideBar />

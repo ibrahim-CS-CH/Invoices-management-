@@ -44,7 +44,6 @@ const Transaction = () => {
   const [product, setProduct] = useState([]);
   const [amount, setAmount] = useState("");
   const [row, setRow] = useState([]);
-
   const fetchProduct = async () => {
     await axios.get("http://127.0.0.1:8000/api/products").then((data) => {
       setProduct(data.data.data);
@@ -75,16 +74,14 @@ const Transaction = () => {
   }
   const navigate = useNavigate();
   const x = localStorage.getItem("auth_token");
-  console.log(x);
-
   const CreateProvide = async (e) => {
     e.preventDefault();
     if (row.length) {
       axios
         .post("http://localhost:8000/api/provide", {
           method: "POST",
-          inventory_id: inventoryId,
-          shop_id: shopId,
+          inventory_id: from,
+          shop_id: to,
           product: row,
 
           headers: {
@@ -173,6 +170,7 @@ const Transaction = () => {
       }
     });
   }
+  console.log(from ,to);
   return (
     <div className="grid grid-cols-12 text-xl text-gray-600">
       <SideBar />
@@ -187,8 +185,8 @@ const Transaction = () => {
                 onChange={(e) => setFrom(e.target.value)}
               >
                 <option />
-                {inventory.map((e, i) => (
-                  <option key={i}>{e.name}</option>
+                {inventory.filter((e)=>e.type === "inventory").map((e, i) => (
+                  <option key={i} value={e.id}>{e.name}</option>
                 ))}
               </select>
             </label>
@@ -202,8 +200,8 @@ const Transaction = () => {
                 }}
               >
                 <option />
-                {inventory.map((e, i) => (
-                  <option key={i}>{e.name}</option>
+                {inventory.filter((e)=>e.type === "shop").map((e, i) => (
+                  <option key={i} value={e.id}>{e.name}</option>
                 ))}
               </select>
             </label>

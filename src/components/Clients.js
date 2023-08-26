@@ -3,14 +3,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import SideBar from "./SideBar";
 import { Link } from "react-router-dom";
-import _ from "lodash";
 
 const pageSize = 5;
 const Clients = () => {
   const [client, setClient] = useState([]);
   const [searchClient, setSearchClient] = useState("");
   const [paginatedClients, setPaginatedClients] = useState();
-  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchClient();
@@ -19,7 +17,6 @@ const Clients = () => {
   const fetchClient = async () => {
     await axios.get("http://127.0.0.1:8000/api/customers").then((data) => {
       setClient(data.data.data);
-      setPaginatedClients(_(data.data.data).slice(0).take(pageSize).value());
     });
   };
 
@@ -41,17 +38,11 @@ const Clients = () => {
       }
     });
   };
-  const pageCount = client ? Math.ceil(client.length / pageSize) : 0;
-  if (pageCount === 1) return null;
-  const pages = _.range(1, pageCount + 1);
 
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
-    const startIndex = (pageNo - 1) * pageSize;
-    const paginatedClient = _(client).slice(startIndex).take(pageSize).value();
-    setPaginatedClients(paginatedClient);
-  };
 
+  const serachResult = client && client.filter((e)=>e.name.toLowerCase().includes(searchClient.toLowerCase()))
+ 
+console.log(serachResult);
   return (
     <div className="grid grid-cols-12">
       <SideBar />
@@ -82,19 +73,7 @@ const Clients = () => {
               </tr>
             </thead>
             <tbody className="bg-blue-50">
-              {paginatedClients &&
-                paginatedClients
-                  .filter((value) => {
-                    if (searchClient === "") {
-                      return value;
-                    } else if (
-                      value.name
-                        .toLowerCase()
-                        .includes(searchClient.toLowerCase())
-                    ) {
-                      return value;
-                    }
-                  })
+              {serachResult.length ? serachResult
                   .map((sup) => (
                     <tr key={sup.id} className={"border-2 border-white"}>
                       <td className="p-2">{sup.name}</td>
@@ -118,10 +97,10 @@ const Clients = () => {
                         </ul>
                       </td>
                     </tr>
-                  ))}
+                  )):<tr>data not found</tr>}
             </tbody>
           </table>
-          <nav className="Page text-center navigation example">
+          {/* <nav className="Page text-center navigation example">
             <ul className="inline-flex -space-x-px">
               {pages.map((page) => (
                 <li>
@@ -134,7 +113,7 @@ const Clients = () => {
                 </li>
               ))}
             </ul>
-          </nav>
+          </nav> */}
         </div>
       </div>
     </div>

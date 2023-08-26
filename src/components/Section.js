@@ -3,33 +3,31 @@ import { FcSalesPerformance, FcDocument, FcBusinessman } from "react-icons/fc";
 import { GiPayMoney } from "react-icons/gi";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
-import _ from "lodash";
 
 const pageSize = 5;
 const Section = () => {
-  const [paginatedClients, setPaginatedClients] = useState();
-  const [currentPage, setCurrentPage] = useState(1);
+  const {t} = useTranslation();
+
+
   const [dashboard, setDashboard] = useState([]);
   const [invoices, setInvoices] = useState([]);
 
-  useEffect(() => {
-    fetchSupplier();
-    fetchInvoices();
-  }, []);
-  const pageCount = invoices ? Math.ceil(invoices.length / pageSize) : 0;
-  if (pageCount === 1) return null;
-  const pages = _.range(1, pageCount + 1);
+  
+  // const pageCount = invoices ? Math.ceil(invoices.length / pageSize) : 0;
+  // if (pageCount === 1) return null;
+  // const pages = _.range(1, pageCount + 1);
 
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
-    const startIndex = (pageNo - 1) * pageSize;
-    const paginatedClient = _(invoices)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
-    setPaginatedClients(paginatedClient);
-  };
+  // const pagination = (pageNo) => {
+  //   setCurrentPage(pageNo);
+  //   const startIndex = (pageNo - 1) * pageSize;
+  //   const paginatedClient = _(invoices)
+  //     .slice(startIndex)
+  //     .take(pageSize)
+  //     .value();
+  //   setPaginatedClients(paginatedClient);
+  // };
   const fetchSupplier = async () => {
     await axios.get("http://127.0.0.1:8000/api/dashboard").then((data) => {
       setDashboard(data.data);
@@ -41,12 +39,15 @@ const Section = () => {
       setInvoices(data.data.data);
     });
   };
-  console.log(invoices);
+  useEffect(() => {
+    fetchSupplier();
+    fetchInvoices();
+  }, []);
 
   return (
     <div className="bg-gray-50 grid grid-cols-2 col-span-9 gap-3 rounded">
       <p className="col-span-2 h-fit ml-4 pt-2 font-semibold text-2xl">
-        Dashboard
+        {t("home")}
       </p>
       <div className="bg-white rounded ml-3 h-fit">
         <h4 className="p-4 font-thin">Total Balance</h4>
@@ -89,7 +90,7 @@ const Section = () => {
       >
         Add New Invoice
       </Link>
-      <table className="table-auto col-span-2 mx-3 mb-3  text-gray-600">
+      {/* <table className="table-auto col-span-2 mx-3 mb-3  text-gray-600">
         <thead className="bg-blue-200 items-center">
           <tr className="rounded">
             <th>Invoice NO</th>
@@ -113,8 +114,8 @@ const Section = () => {
               </>
             ))}
         </tbody>
-      </table>
-      <nav className="Page col-span-2 mx-auto mb-3navigation example">
+      </table> */}
+      {/* <nav className="Page col-span-2 mx-auto mb-3navigation example">
         <ul className="inline-flex -space-x-px">
           {pages.map((page) => (
             <li>
@@ -127,7 +128,7 @@ const Section = () => {
             </li>
           ))}
         </ul>
-      </nav>
+      </nav> */}
     </div>
   );
 };

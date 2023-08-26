@@ -1,4 +1,5 @@
 import React from "react";
+import SelectLng from "./SelectLanguage";
 
 const NavBar = () => {
   return (
@@ -9,6 +10,7 @@ const NavBar = () => {
         </button>
         System
       </h2>
+      <SelectLng />
       {/* <BsArrowLeftCircle className=" text-3xl text-gray-600 text-center mx-auto hover:bg-blue-400 hover:rounded-full " /> */}
     </div>
   );

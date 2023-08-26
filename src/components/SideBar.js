@@ -16,8 +16,10 @@ import { GiPayMoney, GiReceiveMoney } from "react-icons/gi";
 import { BiGroup } from "react-icons/bi";
 import swal from "sweetalert";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const SideBar = () => {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const [subMenu, setsubMenu] = useState(false);
   const [subMenu2, setsubMenu2] = useState(false);
@@ -57,21 +59,21 @@ const SideBar = () => {
           className="py-4 px-4 text-gray-600  hover:bg-blue-100 hover:text-blue-400 rounded flex items-center"
         >
           <FaHome className="text-3xl " />
-          <p className="px-4">DashBoard</p>
+          <p className="px-4">{t("home")}</p>
         </Link>
         <Link
           to="/private/products"
           className="py-4 px-4 text-gray-600 hover:bg-blue-100 hover:text-blue-400 rounded flex items-center "
         >
           <FaProductHunt className="text-3xl" />
-          <p className="px-3 ">Shop Products</p>
+          <p className="px-3 ">{t("shopProduct")}</p>
         </Link>
         <Link
           onClick={() => setsubMenu(!subMenu)}
           className="py-4 px-4 text-gray-600 hover:bg-blue-100 hover:text-blue-400 rounded flex items-center"
         >
           <FaFileInvoice className="text-3xl" />
-          <p className="px-3">Invoices</p>
+          <p className="px-3">{t("invoices")}</p>
           <FcExpand className={`mx-auto ${subMenu && "rotate-180"} `} />
         </Link>
         {subMenu && (
@@ -81,14 +83,14 @@ const SideBar = () => {
               to={"../showPurchases"}
             >
               <RiBillFill className="text-3xl mr-2" />
-              Purcheses
+              {t("purchases")}
             </Link>
             <Link
               className="flex py-2 hover:bg-blue-100 text-center items-center"
               to={"../ShowSales"}
             >
               <RiBillLine className="text-3xl mr-2" />
-              Sales
+              {t("sales")}
             </Link>
           </div>
         )}
@@ -97,7 +99,7 @@ const SideBar = () => {
           className="py-4 px-4 text-gray-600 hover:bg-blue-100 hover:text-blue-400 rounded flex items-center"
         >
           <MdOutlineGroups className="text-3xl" />
-          <p className="px-3">Suppliers</p>
+          <p className="px-3">{t("suppliers")}</p>
           <FcExpand className={`mx-auto ${subMenu3 && "rotate-180"} `} />
         </Link>
         {subMenu3 && (

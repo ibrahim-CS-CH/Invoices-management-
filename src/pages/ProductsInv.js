@@ -15,6 +15,7 @@ const ProductsInv = () => {
   useEffect(() => {
     fetchProducts();
   }, []);
+  console.log(products);
 
   const fetchProducts = async () => {
     await axios.get("http://127.0.0.1:8000/api/inventories").then((data) => {
@@ -61,6 +62,8 @@ const ProductsInv = () => {
                   <th className="text-start">Amount</th>
                   <th className="text-start">Category</th>
                   <th className="text-start">Price</th>
+                  <th className="text-start">created at</th>
+                  <th className="text-start">updated at</th>
                 </tr>
               </thead>
               <tbody className="bg-blue-50 text-center">
@@ -79,14 +82,16 @@ const ProductsInv = () => {
                     })
                     .map((product, i) => (
                       <>
-                        {product.products.map((pro, k) => (
-                          <tr className=" border-2 border-white">
+                        {product.products.map((pro, index) => (
+                          <tr className=" border-2 border-white" key={index}>
                             <>
                               <td className="text-start p-2">
                                 {pro.product_name}
                               </td>
                               <td className="text-start">{pro.amount}</td>
                               <td className="text-start">{pro.category}</td>
+                              <td className="text-start">{pro.sell_price}</td>
+                              <td className="text-start">{pro.sell_price}</td>
                               <td className="text-start">{pro.sell_price}</td>
                             </>
                           </tr>

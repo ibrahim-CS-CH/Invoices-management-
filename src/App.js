@@ -19,6 +19,7 @@ import AddSupplier from "./pages/addSupplier";
 import AddProduct from "./pages/addProduct";
 import Clients from "./components/Clients";
 import EditClient from "./pages/EditClient";
+import LocalizeProvider from "./Context/LocalizeContext"
 // import PrivateRoute from "./components/PrivateRoute";
 import ShowSales from "./pages/ShowSales";
 import ShowPur from "./pages/ShowPur";
@@ -39,7 +40,7 @@ axios.interceptors.request.use(function (config) {
 });
 function App() {
   return (
-    <div>
+    <LocalizeProvider>
       <Router>
         <Fragment>
           <NavBar />
@@ -73,7 +74,8 @@ function App() {
           </Routes>
         </Fragment>
       </Router>
-    </div>
+    </LocalizeProvider>
+
   );
 }
 

@@ -12,9 +12,9 @@ export default function AddProduct() {
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState([]);
   const [option, setOption] = useState("");
-
+console.log(category);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/categories/")
+    fetch("http://127.0.0.1:8000/api/categories")
       .then((data) => data.json())
       .then((val) => setCategory(val.data));
   }, []);
@@ -31,10 +31,11 @@ export default function AddProduct() {
     e.preventDefault();
 
     axios
-      .post(`http://localhost:8000/api/products/`, {
+      .post(`http://localhost:8000/api/products`, {
         method: "POST",
         name,
         sell_price,
+        // purchase_price:"15",
         amount,
         category_id: sendId,
         headers: {

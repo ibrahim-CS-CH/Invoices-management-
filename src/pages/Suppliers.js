@@ -3,23 +3,19 @@ import SideBar from "../components/SideBar";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
-import _ from "lodash";
+import { icons } from "react-icons";
 
-const pageSize = 5;
 const Supplier = () => {
   const [supplier, setSupplier] = useState([]);
   const [searchSupplier, setSearchSupplier] = useState("");
-  const [paginatedClients, setPaginatedClients] = useState();
-  const [currentPage, setCurrentPage] = useState(1);
-
   useEffect(() => {
     fetchSupplier();
   }, []);
+  const searchResult = supplier && supplier.filter((e)=>e.name.toLowerCase().includes(searchSupplier.toLowerCase()));
 
   const fetchSupplier = async () => {
     await axios.get("http://localhost:8000/api/suppliers").then((data) => {
       setSupplier(data.data.data);
-      setPaginatedClients(_(data.data.data).slice(0).take(pageSize).value());
     });
   };
   const deleteSupplier = (id) => {
@@ -40,24 +36,14 @@ const Supplier = () => {
             fetchSupplier();
           })
           .catch(({ response: { data } }) => {
+            Swal.fire("error 401 ","sorry you can't able to delete this supplier", "error");
+
             console.log(data.data.message);
           });
       }
     });
   };
-  const pageCount = supplier ? Math.ceil(supplier.length / pageSize) : 0;
-  if (pageCount === 1) return null;
-  const pages = _.range(1, pageCount + 1);
-
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
-    const startIndex = (pageNo - 1) * pageSize;
-    const paginatedSupplier = _(supplier)
-      .slice(startIndex)
-      .take(pageSize)
-      .value();
-    setPaginatedClients(paginatedSupplier);
-  };
+  
 
   return (
     <div className="grid grid-cols-12">
@@ -91,19 +77,7 @@ const Supplier = () => {
               </tr>
             </thead>
             <tbody className="bg-blue-50">
-              {paginatedClients &&
-                paginatedClients
-                  .filter((value) => {
-                    if (searchSupplier === "") {
-                      return value;
-                    } else if (
-                      value.name
-                        .toLowerCase()
-                        .includes(searchSupplier.toLowerCase())
-                    ) {
-                      return value;
-                    }
-                  })
+              {searchResult.length ? searchResult
                   .map((sup) => (
                     <tr key={sup.id} className={"border-2 border-white"}>
                       <td className="p-2">{sup.name}</td>
@@ -127,10 +101,10 @@ const Supplier = () => {
                         </ul>
                       </td>
                     </tr>
-                  ))}
+                  )): <tr className="">Data not founded, Try another search</tr>}
             </tbody>
           </table>
-          <nav className="Page text-center navigation example">
+          {/* <nav className="Page text-center navigation example">
             <ul className="inline-flex -space-x-px">
               {pages.map((page) => (
                 <li>
@@ -143,7 +117,7 @@ const Supplier = () => {
                 </li>
               ))}
             </ul>
-          </nav>
+          </nav> */}
         </div>
       </div>
     </div>

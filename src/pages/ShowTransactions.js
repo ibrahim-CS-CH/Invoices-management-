@@ -15,7 +15,9 @@ const ShowTransactions = () => {
   };
   const fetchTrans = async () => {
     await axios.get("http://127.0.0.1:8000/api/transaction").then((data) => {
-      setTrans(data.data.data);
+      console.log(data);
+      setTrans(data.data);
+      console.log(trans);
     });
   };
   useEffect(() => {
@@ -33,6 +35,7 @@ const ShowTransactions = () => {
   //     });
   //   }
   //   console.log(pr);
+  console.log( products);
 
   return (
     <div className="grid grid-cols-12">
@@ -80,11 +83,11 @@ const ShowTransactions = () => {
               </tr>
             </thead>
             <tbody className="bg-blue-50 ">
-              {trans.map((e, i) => (
+              {trans && trans.map((e, i) => (
                 <tr key={i} className={"border-2 border-white"}>
                   <td className="text-start p-2">{e.inventory_id}</td>
                   <td>{e.shop_id}</td>
-                  {products.map(
+                  {products && products.map(
                     (x) => {
                       if (x.id === e.product_id) {
                         return <td key={x.id}>{x.name}</td>;

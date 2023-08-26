@@ -13,7 +13,6 @@ const ShowSales = () => {
       setSalesInv(data.data.data);
     });
   };
-  console.log(salesInv);
   return (
     <div className="grid grid-cols-12">
       <SideBar />
