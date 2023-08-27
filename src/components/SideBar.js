@@ -109,14 +109,14 @@ const SideBar = () => {
               to={"../suppliers"}
             >
               <BiGroup className="text-3xl mr-2" />
-              Show Supplier
+              {t("showSupplier")}
             </Link>
             <Link
               className="flex py-2 hover:bg-blue-100 text-center items-center"
               to={"../supplierPayment"}
             >
               <GiPayMoney className="text-3xl mr-2" />
-              <p>Supplier payment</p>
+              {t("supplierPayment")}
             </Link>
           </div>
         )}
@@ -132,7 +132,7 @@ const SideBar = () => {
           className="py-4 px-4 text-gray-600 hover:bg-blue-100 hover:text-blue-400 rounded flex items-center"
         >
           <MdInventory className="text-3xl" />
-          <p className="px-3">Inventory</p>
+          <p className="px-3">{t("inventories")}</p>
           <FcExpand className={`mx-auto ${subMenu2 && "rotate-180"} `} />
         </Link>
         {subMenu2 && (
@@ -142,14 +142,14 @@ const SideBar = () => {
               to={"../pages/ProductsInv"}
             >
               <FaProductHunt className="text-3xl mr-2" />
-              Products
+              {t("products")}
             </Link>
             <Link
               className="flex py-2 hover:bg-blue-100 text-center items-center w-full"
               to={"../showTransaction"}
             >
               <BiTransferAlt className="text-3xl mr-2" />
-              Transaction
+              {t("transactions")}
             </Link>
           </div>
         )}
@@ -165,7 +165,7 @@ const SideBar = () => {
           className="py-4 px-4 text-gray-600 hover:bg-blue-100 hover:text-blue-400 rounded flex items-center"
         >
           <TiGroup className="text-3xl" />
-          <p className="px-3">Clients</p>
+          <p className="px-3">{t("clients")}</p>
           <FcExpand className={`mx-auto ${subMenu4 && "rotate-180"} `} />
         </Link>
         {subMenu4 && (
@@ -175,14 +175,14 @@ const SideBar = () => {
               to={"../clients"}
             >
               <MdGroup className="text-3xl mr-2" />
-              Show Client
+              {t("clients")}
             </Link>
             <Link
               className="flex py-2 hover:bg-blue-100 text-center items-center"
               to={"../clientPayment"}
             >
               <GiReceiveMoney className="text-3xl mr-2" />
-              <p>Client payment</p>
+              <p>{t("clientPayment")}</p>
             </Link>
           </div>
         )}
@@ -203,7 +203,7 @@ const SideBar = () => {
           className="py-4 px-4 text-gray-600 hover:bg-blue-100 hover:text-blue-400 rounded flex items-center"
         >
           <MdLogout className="text-3xl" />
-          <p className="px-3">Logout</p>
+          <p className="px-3">{t("logout")}</p>
         </button>
       </ul>
     </div>

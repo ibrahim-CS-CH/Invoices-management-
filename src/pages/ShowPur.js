@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SideBar from "../components/SideBar";
 import { BiShowAlt } from "react-icons/bi";
+import { useTranslation } from "react-i18next";
 
 const ShowPur = () => {
+  const {t} = useTranslation();
   var x = [];
   const [salesInv, setSalesInv] = useState([]);
 
@@ -17,15 +19,15 @@ const ShowPur = () => {
         setSalesInv(data.data.data);
       });
   };
-  const fetchAll = async () => {
-    await axios
-      .get(
-        "http://localhost:8000/api/sales-invoices"
-      )
-      .then((data) => {
-        console.log(data, "trying");
-      }).catch((err)=>console.log(err));
-  };
+  // const fetchAll = async () => {
+  //   await axios
+  //     .get(
+  //       "http://localhost:8000/api/sales-invoices"
+  //     )
+  //     .then((data) => {
+  //       console.log(data, "trying");
+  //     }).catch((err)=>console.log(err));
+  // };
   const [searchProduct, setSearchProduct] = useState("");
   const [purchases, setPurchases] = useState([]);
   // if (salesInv) {
@@ -38,20 +40,19 @@ const ShowPur = () => {
   // }
   useEffect(() => {
     fetchProducts();
-    fetchAll();
   }, []);
   return (
     <div className="grid grid-cols-12">
       <SideBar />
-      <div className="col-span-8 bg-gray-50 ">
+      <div className="col-span-10 bg-gray-50 text-xl ">
         <p className=" h-fit ml-4 mb-3 pt-2 font-semibold text-2xl">
-          Purchases Invoices
+          {t("purchases")}
         </p>
         <Link
           className="bg-blue-400 w-fit ml-4 p-2 rounded px-3 h-10 hover:bg-blue-500 text-white font-medium "
           to={"../pages/Purcheses"}
         >
-          Add New Invoice
+          {t("addPurchases")}
         </Link>
         <div className="bg-white rounded  text-xl m-4">
           <label>
@@ -68,11 +69,15 @@ const ShowPur = () => {
             <table className=" w-full text-gray-600 ">
               <thead className="bg-blue-200 ">
                 <tr>
-                  <th className="text-start p-2">Invoice-No</th>
+                  <th className="text-start p-2">{t("invoiceNum")}</th>
 
-                  <th className="text-start">Total</th>
-                  <th className="text-start">Type</th>
-                  <th className="text-start">Supplier</th>
+                  <th className="text-start">{t("total")}</th>
+                  <th className="text-start">{t("paid")}</th>
+                  <th className="text-start">{t("rest")}</th>
+                  <th className="text-start">{t("type")}</th>
+                  <th className="text-start">{t("supplierName")}</th>
+                  <th className="text-start">{t("codePurchase")}</th>
+                  <th className="text-start">{t("created_at")}</th>
                   {/* <th className="text-start">Action</th> */}
                 </tr>
               </thead>
@@ -95,6 +100,8 @@ const ShowPur = () => {
                         <td className="text-start p-2">{e.id}</td>
 
                         <td>{e.total}</td>
+                        <td>{e.paid}</td>
+                        <td>{e.total - e.paid}</td>
                         <td>{e.status}</td>
                         {e.supplier.map((sup) => (
                           <td>{sup.name}</td>
@@ -102,6 +109,8 @@ const ShowPur = () => {
                         {/* <td className="">
                           <BiShowAlt className="cursor-pointer hover:bg-blue-200 rounded " />
                         </td> */}
+                        <td>{e.code}</td>
+                        <td>{e.created_at}</td>
                       </tr>
                     ))}
               </tbody>

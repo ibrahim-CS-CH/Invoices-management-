@@ -5,7 +5,11 @@
     "password": "الرقم السري",
     "login": "تسجيل الدخول",
     "shopProduct": "المحل",
-"sales":"المبيعات",
+    "sales":"المبيعات",
+    "showSupplier": "الموردين",
+    "supplierPayment":"اجل الموردين",
+    "clientPayment":"اجل العملاء",
+    "logout":"تسجبل خروج",
     "purchases": "المشتريات",
     "home":"الرئيسية",
     "products":"المنتجات",
@@ -44,8 +48,28 @@
     "addClient":"اضف عميل جديد",
     "editClient":"تعديل عميل",
     "deleteClient":"حذف عميل",
-    "id": "الكود"
-    
+    "purchasBill":"فاتوة مشتريات",
+    "storeIn": "مكان التخزين",
+    "totalInvoice": "اجمالي الفاتورة",
+    "id": "الكود",
+    "totalBalance":"اجمالي مبيعات اليوم",
+    "totalDebt":"اجمالي مديونات اليوم",
+    "totalSalesInvoices":"عدد فواتير اليوم",
+    "totalClients":" العملاء اليوم",
+    "addNewInvoice": "اضف فاتورة مشتريات",
+    "addNewProduct": "أضف منتج ",
+    "productName":"اسم المنتج",
+    "category":"المجموعة",
+    "actions":"العمليات",
+    "addPurchases":"أضف فاتورة مشتريات",
+    "invoiceNum":"رقم الفاتورة",
+    "total":"الاجمالي",
+    "type":"النوع",
+    "supplierName":"اسم المورد",
+    "created_at": "تاريخ الانشاء",
+    "codePurchase": "رقم قاتورة الشراء",
+    "paid": "المدفوع",
+    "rest": "الباقي"
     
     
 

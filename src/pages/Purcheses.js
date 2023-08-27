@@ -4,8 +4,10 @@ import swal from "sweetalert";
 import { TiDelete } from "react-icons/ti";
 import SideBar from "../components/SideBar";
 import { json, Navigate, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Purcheses = () => {
+  const {t} = useTranslation();
   const [supplier, setSupplier] = useState([]);
   const [categ, setCateg] = useState([]);
   const [product, setProduct] = useState([]);
@@ -166,11 +168,11 @@ const Purcheses = () => {
     <div className="grid grid-cols-12 text-xl text-gray-600">
       <SideBar />
       <div className="col-span-8 bg-gray-50 p-4">
-        <p className=" h-fit ml-4 mb-2 pt-2 font-bold text-3xl">Purchases</p>
+        <p className=" h-fit ml-4 mb-2 pt-2 font-bold text-3xl">{t("purchasBill")}</p>
         <form onSubmit={CreatePurchase}>
           <div className="bg-white m-4 space-x-5 w-fit p-4 font-semibold">
             <label>
-              Supplier
+              {t("supplierName")}
               <select
                 className="border border-blue-400 rounded h-10 focus:outline-none focus:border-sky-500 w-52 ml-1"
                 required
@@ -185,7 +187,7 @@ const Purcheses = () => {
               </select>
             </label>
             <label>
-              Code
+              {t("codePurchase")}
               <input
                 type={"number"}
                 className="border border-blue-400 w-28 text-center  mx-2 h-10 rounded"
@@ -198,7 +200,7 @@ const Purcheses = () => {
           </div>
           <div className="bg-white m-4 space-x-5 w-fit p-4 font-semibold">
             <label>
-              Store In
+              {t("storeIn")}
               <select
                 className="border border-blue-400 rounded h-10 focus:outline-none focus:border-sky-500 w-48 ml-1"
                 onChange={(e) => {
@@ -216,7 +218,7 @@ const Purcheses = () => {
           </div>
           <div className="bg-white m-4 space-x-4 w-fit p-4 font-semibold">
             <label>
-              Category
+              {t("category")}
               <select
                 className="border border-blue-400 rounded h-10 focus:outline-none focus:border-sky-500 w-48 ml-1"
                 onChange={(e) => {
@@ -230,7 +232,7 @@ const Purcheses = () => {
               </select>
             </label>
             <label>
-              Product
+              {t("productName")}
               <select
                 className="border border-blue-400 rounded h-10 focus:outline-none focus:border-sky-500 w-52 ml-1"
                 onChange={(e) => {
@@ -244,7 +246,7 @@ const Purcheses = () => {
               </select>
             </label>
             <label>
-              Qty
+              {t("amount")}
               <input
                 type={"number"}
                 min={1}
@@ -254,7 +256,7 @@ const Purcheses = () => {
               />
             </label>
             <label>
-              Price
+              {t("price")}
               <input
                 type={"number"}
                 className="border border-blue-400 w-16 text-center  mx-2 h-10 rounded"
@@ -264,7 +266,7 @@ const Purcheses = () => {
               />
             </label>
             <label className="hidden">
-              Total
+              {t("total")}
               <input
                 readOnly
                 type={"text"}
@@ -276,18 +278,18 @@ const Purcheses = () => {
               className="bg-blue-400 font-semibold text-white rounded px-3 py-1 h-10"
               onClick={addProduct}
             >
-              Add
+              {t("save")}
             </button>
           </div>
           <div className="ml-4">
             <table className="w-1000 ">
               <thead className="bg-blue-300 text-gray-600 ">
                 <tr>
-                  <th className="text-start p-2">product</th>
-                  <th className="text-start ">price</th>
-                  <th className="text-start">Qty</th>
-                  <th className="text-start">Total</th>
-                  <th className="text-center">Action</th>
+                  <th className="text-start p-2">{t("productName")}</th>
+                  <th className="text-start ">{t("price")}</th>
+                  <th className="text-start">{t("amount")}</th>
+                  <th className="text-start">{t("total")}</th>
+                  <th className="text-center">{t("actions")}</th>
                 </tr>
               </thead>
               <tbody className="bg-blue-100">
@@ -309,12 +311,12 @@ const Purcheses = () => {
             </table>
           </div>
           <div className="bg-white m-4 space-x-5 w-fit p-4 font-semibold">
-            Total invoice:
+            {t("totalInvoice")}
             <span className="bg-white rounded p-1 mx-1 border border-blue-300">
               {sum}$
             </span>
             <label>
-              Paid
+              {t("paid")}
               <input
                 type={"number"}
                 min={0}
@@ -329,7 +331,7 @@ const Purcheses = () => {
               className="bg-blue-400 text-white font-semibold rounded px-3 py-1 "
               type="submit"
             >
-              Submit
+              {t("save")}
             </button>
           </div>
 

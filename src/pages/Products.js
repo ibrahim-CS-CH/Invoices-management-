@@ -125,8 +125,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import SideBar from "../components/SideBar";
+import { useTranslation } from "react-i18next";
 
 const Products = () => {
+  const {t} = useTranslation();
 
   const [products, setProducts] = useState([]);
   const [searchProduct, setSearchProduct] = useState("");
@@ -145,24 +147,24 @@ const Products = () => {
 
   return (
     <>
-      <div className="grid grid-cols-12">
+      <div className="grid grid-cols-12 text-xl">
         <SideBar />
         <div className="col-span-8 bg-gray-50 ">
           <p className=" h-fit ml-4 mb-2 pt-2 font-semibold text-2xl">
-            Products
+            {t("products")}
           </p>
           <Link
             to={"../addproduct"}
             className="bg-blue-400 w-fit ml-4 rounded px-3 h-10 hover:bg-blue-500 text-white font-medium py-2"
           >
-            Add New Product
+           {t("addNewProduct")}
           </Link>
           <div className="bg-white rounded m-4">
-            <p className="p-3 font-semibold text-2xl">Search</p>
+            <p className="p-3 font-semibold text-2xl">{t("search")}</p>
             <input
               className="border border-gray-400 rounded p-2 m-3 w-80"
               type="text"
-              placeholder="Product name"
+              placeholder={t("productName")}
               onChange={(e) => setSearchProduct(e.target.value)}
             />
           </div>
@@ -170,11 +172,11 @@ const Products = () => {
             <table className="table-auto w-full  text-gray-600 ">
               <thead className="bg-blue-200 ">
                 <tr className="p-2">
-                  <th className="text-start p-2">Product Name</th>
-                  <th className="text-start">Amount</th>
-                  <th className="text-start">Category</th>
-                  <th className="text-start">Price</th>
-                  <th className="text-center">action</th>
+                  <th className="text-start p-2">{t("name")}</th>
+                  <th className="text-start">{t("amount")}</th>
+                  <th className="text-start">{t("category")}</th>
+                  <th className="text-start">{t("price")}</th>
+                  <th className="text-center">{t("actions")}</th>
                 </tr>
               </thead>
               <tbody className="bg-blue-50 text-center">
@@ -192,7 +194,7 @@ const Products = () => {
                       }
                     })
                     .map((product, i) => (
-                      <tr key={i} className={"border-2 border-white"}>
+                      <tr key={i} className={"border-2 border-white my-2"}>
                         <>
                           <td className="text-start p-2">
                             {product.product_name}
@@ -206,7 +208,7 @@ const Products = () => {
                                 className="mr-3 px-3 py-1 rounded bg-blue-400 text-white hover:bg-blue-600 "
                                 to={`../editproduct/${product.product_id}`}
                               >
-                                Edit
+                                {t("edit")}
                               </Link>
                             </ul>
                           </td>
